@@ -12,7 +12,10 @@ import {
   Flex,
   Heading,
   HStack,
+  IconButton,
 } from "@chakra-ui/react";
+import { FaCirclePlus, FaTrashCan, FaPenToSquare } from "react-icons/fa6";
+import { MdOutlineInfo } from "react-icons/md";
 
 const workflows = [
   { id: 1, name: "Workflow 1", created_at: "2023-09-01" },
@@ -41,7 +44,7 @@ const WorkflowsPage = () => {
             <Heading>
               My Workflows
             </Heading>
-            <Button colorScheme="blue" size="sm">
+            <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue" size="sm">
               New Workflow
             </Button>
           </HStack>
@@ -69,15 +72,9 @@ const WorkflowsPage = () => {
                   <Td>{workflow.name}</Td>
                   <Td>{workflow.created_at}</Td>
                   <Td>
-                    <Button colorScheme="teal" size="sm" mr="2">
-                      Details
-                    </Button>
-                    <Button colorScheme="blue" size="sm" mr="2">
-                      Edit
-                    </Button>
-                    <Button colorScheme="red" size="sm">
-                      Delete
-                    </Button>
+                    <IconButton icon={<MdOutlineInfo size='1.25rem' />} colorScheme="teal" size="sm" mr="2" />
+                    <IconButton icon={<FaPenToSquare />} colorScheme="blue" size="sm" mr="2" />
+                    <IconButton icon={<FaTrashCan />} colorScheme="red" size="sm" />
                   </Td>
                 </Tr>
               ))}
