@@ -34,17 +34,17 @@ const WorkflowsPage = () => {
   return (
     <Flex
       direction='column'
-      height="100vh"
+      minHeight="100vh"
       bg="gray.100"
       p={3}
     >
       <Card px={6} py={2} rounded="md" shadow="md">
         <CardHeader>
-          <HStack justifyContent='space-between'>
+          <HStack justifyContent='space-between' wrap='wrap'>
             <Heading>
               My Workflows
             </Heading>
-            <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue" size="sm">
+            <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
               New Workflow
             </Button>
           </HStack>
@@ -53,16 +53,16 @@ const WorkflowsPage = () => {
           <Table
             variant="simple"
             __css={{
-              'table-layout': 'fixed',
+              tableLayout: 'auto',
               width: 'full'
             }}
           >
             <Thead>
               <Tr>
-                <Th w={25}>ID</Th>
-                <Th w={25}>Name</Th>
-                <Th w={25}>Created at</Th>
-                <Th w={25}>Actions</Th>
+                <Th w='20%'>ID</Th>
+                <Th w='50%'>Name</Th>
+                <Th w='20%'>Created at</Th>
+                <Th w='10%'>Actions</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -72,9 +72,11 @@ const WorkflowsPage = () => {
                   <Td>{workflow.name}</Td>
                   <Td>{workflow.created_at}</Td>
                   <Td>
-                    <IconButton icon={<MdOutlineInfo size='1.25rem' />} colorScheme="teal" size="sm" mr="2" />
-                    <IconButton icon={<FaPenToSquare />} colorScheme="blue" size="sm" mr="2" />
-                    <IconButton icon={<FaTrashCan />} colorScheme="red" size="sm" />
+                    <HStack spacing={2}>
+                      <IconButton icon={<MdOutlineInfo size='1.25rem' />} colorScheme="teal" size="sm" mr="2" />
+                      <IconButton icon={<FaPenToSquare />} colorScheme="blue" size="sm" mr="2" />
+                      <IconButton icon={<FaTrashCan />} colorScheme="red" size="sm" />
+                    </HStack>
                   </Td>
                 </Tr>
               ))}
