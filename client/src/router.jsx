@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login } from "./pages";
+import { Login, Workflow } from "./pages";
 
 const router = createBrowserRouter([
   {
@@ -8,7 +8,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <h1>Dashboard</h1>,
+    element: <Workflow/>,
   },
   {
     path: '*',
