@@ -17,7 +17,7 @@ import { FaCirclePlus, FaTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { MdOutlineInfo } from "react-icons/md";
 import PropTypes from 'prop-types';
 
-const WorkflowsTable = ({ workflows }) => {
+const WorkflowsTable = ({ workflows, openDeleteModal }) => {
   return (
     <Card px={6} py={2} rounded="md" shadow="md">
       <CardHeader>
@@ -56,7 +56,12 @@ const WorkflowsTable = ({ workflows }) => {
                   <HStack spacing={2}>
                     <IconButton icon={<MdOutlineInfo size='1.25rem' />} colorScheme="teal" size="sm" mr="2" />
                     <IconButton icon={<FaPenToSquare />} colorScheme="blue" size="sm" mr="2" />
-                    <IconButton icon={<FaTrashCan />} colorScheme="red" size="sm" />
+                    <IconButton
+                      colorScheme="red"
+                      size="sm"
+                      icon={<FaTrashCan />}
+                      onClick={() => openDeleteModal(workflow)}
+                    />
                   </HStack>
                 </Td>
               </Tr>
@@ -70,6 +75,7 @@ const WorkflowsTable = ({ workflows }) => {
 
 WorkflowsTable.propTypes = {
   workflows: PropTypes.array.isRequired,
+  openDeleteModal: PropTypes.func.isRequired,
 };
 
 export default WorkflowsTable;

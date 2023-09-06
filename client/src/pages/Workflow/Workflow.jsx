@@ -1,5 +1,7 @@
 import { Flex, } from "@chakra-ui/react";
-import { WorkflowTable } from ".";
+import { useReducer } from "react";
+import { WorkflowTable, DeleteWorkflowModal } from ".";
+import { reducer, initialState } from "./workflowReducer";
 
 const workflows = [
   { id: 1, name: "Workflow 1", created_at: "2023-09-01" },
@@ -15,6 +17,17 @@ const workflows = [
 ];
 
 const Workflows = () => {
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const openDeleteModal = (workflow) => {
+    dispatch({ type: 'OPEN_DELETE_MODAL', payload: { workflow } });
+  };
+
+  const closeDeleteModal = () => {
+    dispatch({ type: 'CLOSE_DELETE_MODAL' });
+  };
+
   return (
     <Flex
       direction='column'
@@ -22,7 +35,16 @@ const Workflows = () => {
       bg="gray.100"
       p={3}
     >
-      <WorkflowTable workflows={workflows} />
+      <WorkflowTable
+        workflows={workflows}
+        openDeleteModal={openDeleteModal}
+      />
+
+      <DeleteWorkflowModal
+        workflow={state.workflow}
+        isOpen={state.isDeleteModalOpen}
+        onClose={closeDeleteModal}
+      />
     </Flex>
   );
 };
