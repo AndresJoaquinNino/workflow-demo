@@ -7,7 +7,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: '/dashboard',
+    path: '/workflow',
     element: <Workflow/>,
   },
   {
