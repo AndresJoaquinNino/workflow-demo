@@ -1,0 +1,76 @@
+import { Box, Button, VStack, Select, Text, Input, Heading } from "@chakra-ui/react";
+import { FaCirclePlus } from "react-icons/fa6";
+import PropTypes from 'prop-types';
+
+const WorkflowManagerSidebar = ({ focusElement, addNewNode, deleteNode, deleteEdge }) => {
+  return (
+    <Box
+      as="aside"
+      right="0"
+      top="0"
+      h="100%"
+      w="250px"
+      border='1px'
+      borderColor='gray.200'
+      p="4"
+    >
+      <VStack align='start'>
+        <Box w='100%' as='form' onSubmit={addNewNode}>
+          <Heading size='lg' mb='4'>Add New Node</Heading>
+          <Text mb='1'> Entity Name </Text>
+          <Input mb='4' name='entityName' placeholder='...' />
+          <Text mb='1'> Entity Type </Text>
+          <Select
+            mb='4'
+            name='entityType'
+            colorScheme='blue'
+            variant='filled'
+          >
+            <option value='process'>Process</option>
+            <option value='condition'>Condition</option>
+          </Select>
+          <Button
+            w='100%'
+            type='submit'
+            colorScheme='blue'
+            rightIcon={<FaCirclePlus />}
+          >
+            Add
+          </Button>
+        </Box>
+        {
+          focusElement.type === 'node'
+          &&
+          <Button
+            w='100%'
+            colorScheme='red'
+            onClick={() => deleteNode(focusElement.id)}
+          >
+            Delete Node
+          </Button>
+        }
+        {
+          focusElement.type === 'edge'
+          &&
+          <Button
+            w='100%'
+            colorScheme='red'
+            onClick={() => deleteEdge(focusElement.id)}
+          >
+            Delete Edge
+          </Button>
+        }
+
+      </VStack>
+    </Box>
+  );
+};
+
+WorkflowManagerSidebar.propTypes = {
+  focusElement: PropTypes.object.isRequired,
+  addNewNode: PropTypes.func.isRequired,
+  deleteNode: PropTypes.func.isRequired,
+  deleteEdge: PropTypes.func.isRequired,
+};
+
+export default WorkflowManagerSidebar;
