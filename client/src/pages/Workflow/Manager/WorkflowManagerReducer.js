@@ -41,7 +41,11 @@ export const reducer = (state, action) => {
     case 'REMOVE_EDGE':
       return {
         ...state,
-        edges: state.edges.filter((edge) => edge.id !== action.payload)
+        edges: state.edges.filter((edge) => edge.id !== action.payload),
+        focusElement: {
+          type: '',
+          id: ''
+        }
       };
     case 'SET_FOCUS_ELEMENT':
       return {
