@@ -21,11 +21,11 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
   };
 
   const deleteNode = (nodeId) => {
-    dispatch({ type: 'DELETE_NODE', payload: nodeId })
+    dispatch({ type: 'REMOVE_NODE', payload: nodeId })
   }
 
   const deleteEdge = (nodeId) => {
-    dispatch({ type: 'DELETE_EDGE', payload: nodeId })
+    dispatch({ type: 'REMOVE_EDGE', payload: nodeId })
   }
 
   return (
