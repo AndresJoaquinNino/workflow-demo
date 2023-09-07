@@ -13,7 +13,7 @@ const WorkflowDiagram = ({ state, dispatch }) => {
   const { nodes, edges } = state
 
   const handleFocus = (element, elementType) => {
-    dispatch({ type: 'FOCUS_ELEMENT', payload: { type: elementType, id: element.id } })
+    dispatch({ type: 'SET_FOCUS_ELEMENT', payload: { type: elementType, id: element.id } })
   }
 
   const onNodesChange = useCallback(
