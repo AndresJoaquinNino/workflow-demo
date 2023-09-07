@@ -8,29 +8,30 @@ import ReactFlow, {
   addEdge,
 } from 'reactflow';
 
-const WorkflowDiagram = ({ nodes, setNodes, edges, setEdges, setFocusElement }) => {
+const WorkflowDiagram = ({ state, dispatch }) => {
+
+  const { nodes, edges } = state
 
   const handleFocus = (element, elementType) => {
-    setFocusElement({
-      type: elementType,
-      id: element.id
-    });
+    dispatch({ type: 'FOCUS_ELEMENT', payload: { type: elementType, id: element.id } })
   }
 
   const onNodesChange = useCallback(
     (changes) => {
-      setNodes((nds) => applyNodeChanges(changes, nds))
-    },
-    [setNodes]
+      dispatch({ type: 'UPDATE_NODES', payload: applyNodeChanges(changes, nodes) })
+    }, [nodes, dispatch]
   );
   const onEdgesChange = useCallback(
     (changes) => {
-      setEdges((eds) => applyEdgeChanges(changes, eds))
-    },
-    [setEdges]
+      dispatch({ type: 'UPDATE_EDGES', payload: applyEdgeChanges(changes, edges) })
+    }, [edges, dispatch]
   );
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
+  const onConnect = useCallback(
+    (params) => {
+      dispatch({ type: 'UPDATE_EDGES', payload: addEdge(params, edges) })
+    }, [edges, dispatch]
+  );
 
   return (
     <ReactFlow
@@ -51,11 +52,8 @@ const WorkflowDiagram = ({ nodes, setNodes, edges, setEdges, setFocusElement }) 
 };
 
 WorkflowDiagram.propTypes = {
-  nodes: PropTypes.array.isRequired,
-  setNodes: PropTypes.func.isRequired,
-  edges: PropTypes.array.isRequired,
-  setEdges: PropTypes.func.isRequired,
-  setFocusElement: PropTypes.func.isRequired,
+  state: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 

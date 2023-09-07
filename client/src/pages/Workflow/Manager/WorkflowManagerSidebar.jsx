@@ -2,7 +2,32 @@ import { Box, Button, VStack, Select, Text, Input, Heading } from "@chakra-ui/re
 import { FaCirclePlus } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 
-const WorkflowManagerSidebar = ({ focusElement, addNewNode, deleteNode, deleteEdge }) => {
+const WorkflowManagerSidebar = ({ state, dispatch }) => {
+
+  const { focusElement, nodes } = state
+
+  const addNewNode = (event) => {
+    event.preventDefault();
+    const entityName = event.target.entityName.value
+    const entityType = event.target.entityType.value
+    const color = entityType === 'process' ? '#689fc9' : '#319795'
+    const newNode = {
+      id: (nodes.length + 1).toString(),
+      data: { label: entityName },
+      position: { x: 100, y: 100 },
+      style: { backgroundColor: color, color: '#fff' },
+    };
+    dispatch({ type: 'ADD_NODE', payload: newNode })
+  };
+
+  const deleteNode = (nodeId) => {
+    dispatch({ type: 'DELETE_NODE', payload: nodeId })
+  }
+
+  const deleteEdge = (nodeId) => {
+    dispatch({ type: 'DELETE_EDGE', payload: nodeId })
+  }
+
   return (
     <Box
       as="aside"
@@ -67,10 +92,8 @@ const WorkflowManagerSidebar = ({ focusElement, addNewNode, deleteNode, deleteEd
 };
 
 WorkflowManagerSidebar.propTypes = {
-  focusElement: PropTypes.object.isRequired,
-  addNewNode: PropTypes.func.isRequired,
-  deleteNode: PropTypes.func.isRequired,
-  deleteEdge: PropTypes.func.isRequired,
+  state: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
 
 export default WorkflowManagerSidebar;
