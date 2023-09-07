@@ -21,16 +21,16 @@ const WorkflowDiagram = ({ nodes, setNodes, edges, setEdges, setFocusElement }) 
     (changes) => {
       setNodes((nds) => applyNodeChanges(changes, nds))
     },
-    []
+    [setNodes]
   );
   const onEdgesChange = useCallback(
     (changes) => {
       setEdges((eds) => applyEdgeChanges(changes, eds))
     },
-    []
+    [setEdges]
   );
 
-  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), []);
+  const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
   return (
     <ReactFlow
