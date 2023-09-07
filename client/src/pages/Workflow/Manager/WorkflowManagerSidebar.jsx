@@ -9,15 +9,14 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
   const addNewNode = (event) => {
     event.preventDefault();
     const entityName = event.target.entityName.value
-    const entityType = event.target.entityType.value
-    const color = entityType === 'process' ? '#689fc9' : '#319795'
     const newNode = {
       id: (nodes.length + 1).toString(),
       data: { label: entityName },
       position: { x: 100, y: 100 },
-      style: { backgroundColor: color, color: '#fff' },
+      type: 'rectangle',
     };
     dispatch({ type: 'ADD_NODE', payload: newNode })
+    event.target.entityName.value = ''
   };
 
   const deleteNode = (nodeId) => {

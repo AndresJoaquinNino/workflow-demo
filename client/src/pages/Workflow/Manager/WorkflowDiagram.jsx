@@ -7,6 +7,7 @@ import ReactFlow, {
   applyEdgeChanges,
   addEdge,
 } from 'reactflow';
+import { nodeTypes } from '../../../components/Nodes';
 
 const WorkflowDiagram = ({ state, dispatch }) => {
 
@@ -39,6 +40,7 @@ const WorkflowDiagram = ({ state, dispatch }) => {
       onlyRenderVisibleElements
       nodes={nodes}
       edges={edges}
+      nodeTypes={nodeTypes}
       onNodeDragStart={(event, node) => handleFocus(node, 'node')}
       onEdgeClick={(event, node) => handleFocus(node, 'edge')}
       onNodesChange={onNodesChange}
