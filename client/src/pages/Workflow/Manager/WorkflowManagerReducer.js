@@ -1,6 +1,34 @@
+
+const initNodes = [
+  {
+    id: '1',
+    data: { label: 'Init', role: 'init', isDeletable: false },
+    position: { x: 100, y: 100 },
+    type: 'circle',
+  },
+  {
+    id: '2',
+    data: { label: 'End', role: 'end', isDeletable: false },
+    position: { x: 100, y: 300 },
+    type: 'circle',
+  },
+];
+
+const initEdges = [
+  {
+    id: "reactflow__edge-11.bottom-22.top",
+    markerEnd: { type: 'arrowclosed' },
+    source: "1",
+    sourceHandle: "1.bottom",
+    target: "2",
+    targetHandle: "2.top",
+    type: "smoothstep",
+  }
+];
+
 export const initialState = {
-  nodes: [],
-  edges: [],
+  nodes: initNodes,
+  edges: initEdges,
   focusElement: {
     type: '',
     id: ''
