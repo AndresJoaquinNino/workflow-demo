@@ -1,6 +1,5 @@
 import {
-  Card,
-  CardHeader,
+  Box,
   TableContainer,
   Table,
   Thead,
@@ -9,7 +8,7 @@ import {
   Th,
   Td,
   Button,
-  Heading,
+  Text,
   HStack,
   IconButton,
 } from "@chakra-ui/react";
@@ -19,17 +18,21 @@ import PropTypes from 'prop-types';
 
 const WorkflowsTable = ({ workflows, openDeleteModal }) => {
   return (
-    <Card px={6} py={2} rounded="md" shadow="md">
-      <CardHeader>
-        <HStack justifyContent='space-between' wrap='wrap'>
-          <Heading>
-            My Workflows
-          </Heading>
-          <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
-            New Workflow
-          </Button>
-        </HStack>
-      </CardHeader>
+    <Box
+      borderWidth='1px'
+      borderStyle='solid'
+      borderColor='gray.200'
+      px={6}
+      py={3}
+    >
+      <HStack justifyContent='space-between' wrap='wrap'>
+        <Text fontSize='2xl'>
+          Records
+        </Text>
+        <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
+          New Workflow
+        </Button>
+      </HStack>
       <TableContainer>
         <Table
           variant="simple"
@@ -69,7 +72,7 @@ const WorkflowsTable = ({ workflows, openDeleteModal }) => {
           </Tbody>
         </Table>
       </TableContainer>
-    </Card>
+    </Box>
   );
 };
 
