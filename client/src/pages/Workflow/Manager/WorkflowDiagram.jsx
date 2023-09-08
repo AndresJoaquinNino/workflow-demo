@@ -6,6 +6,7 @@ import ReactFlow, {
   applyNodeChanges,
   applyEdgeChanges,
   addEdge,
+  MarkerType,
 } from 'reactflow';
 import { nodeTypes } from '../../../components/Nodes';
 
@@ -30,7 +31,14 @@ const WorkflowDiagram = ({ state, dispatch }) => {
 
   const onConnect = useCallback(
     (params) => {
-      dispatch({ type: 'UPDATE_EDGES', payload: addEdge(params, edges) })
+      const newEdge = {
+        ...params,
+        type: 'smoothstep',
+        markerEnd: {
+          type: MarkerType.ArrowClosed,
+        },
+      };
+      dispatch({ type: 'UPDATE_EDGES', payload: addEdge(newEdge, edges) })
     }, [edges, dispatch]
   );
 
