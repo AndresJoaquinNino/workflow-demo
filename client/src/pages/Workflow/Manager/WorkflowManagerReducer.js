@@ -26,13 +26,15 @@ const initEdges = [
   }
 ];
 
+export const initFocusElement = {
+  type: '',
+  id: ''
+};
+
 export const initialState = {
   nodes: initNodes,
   edges: initEdges,
-  focusElement: {
-    type: '',
-    id: ''
-  }
+  focusElement: initFocusElement
 };
 
 export const reducer = (state, action) => {
