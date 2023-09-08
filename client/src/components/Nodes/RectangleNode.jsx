@@ -7,10 +7,10 @@ const RectangleNode = ({ data }) => {
     <Box
       as="div"
       p={4}
-      minW={100}
-      minH={50}
+      minW={200}
+      minH={100}
       borderRadius={5}
-      background="blue.500"
+      background="blue.300"
       display="flex"
       justifyContent="center"
       alignItems="center"
