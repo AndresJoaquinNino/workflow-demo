@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UsePipes,
+  ValidationPipe,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { WorkflowService } from './workflow.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
@@ -8,7 +20,11 @@ export class WorkflowController {
   constructor(private readonly workflowService: WorkflowService) {}
 
   @Post()
-  create(@Body() createWorkflowDto: CreateWorkflowDto) {
+  @UsePipes(ValidationPipe)
+  @HttpCode(HttpStatus.CREATED)
+  create(
+    @Body() createWorkflowDto: CreateWorkflowDto,
+  ): Promise<CreateWorkflowDto> {
     return this.workflowService.create(createWorkflowDto);
   }
 

@@ -3,10 +3,11 @@ import { WorkflowService } from './workflow.service';
 import { WorkflowController } from './workflow.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Workflow } from './entities/workflow.entity';
+import { UniqueNameValidator } from './validators/unique-name.validator';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Workflow])],
   controllers: [WorkflowController],
-  providers: [WorkflowService],
+  providers: [WorkflowService, UniqueNameValidator],
 })
 export class WorkflowModule {}
