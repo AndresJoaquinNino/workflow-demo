@@ -5,7 +5,7 @@ import { Box, Text, Tooltip } from "@chakra-ui/react";
 const Diamond = ({ data }) => {
 
   const DOTS_SPACING = '-25%';
-  const DIAMOND_SIZE = 125;
+  const DIAMOND_SIZE = 110;
 
   return (
     <Box
