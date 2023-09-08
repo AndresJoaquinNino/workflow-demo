@@ -15,7 +15,7 @@ const Diamond = ({ data }) => {
       minH={DIAMOND_SIZE}
       position="relative"
       transform="rotate(45deg)"
-      background="blue.500"
+      background="orange.300"
     >
       <Box
         as="div"
