@@ -2,7 +2,7 @@ import { Handle } from "reactflow";
 import PropTypes from 'prop-types';
 import { Box, Text, Tooltip } from "@chakra-ui/react";
 
-const RectangleNode = ({ data }) => {
+const RectangleNode = ({ id, data }) => {
   return (
     <Box
       as="div"
@@ -18,18 +18,18 @@ const RectangleNode = ({ data }) => {
       <Handle
         type="target"
         position="top"
-        id={`${data.id}.top`}
+        id={`${id}.top`}
         style={{ borderRadius: 0 }}
       />
       <Handle
         type="source"
         position="right"
-        id={`${data.id}.right`}
+        id={`${id}.right`}
         style={{ borderRadius: 0 }}
       />
       <Tooltip label={data.label}>
         <Text
-          id={data.id}
+          id={id}
           overflow='hidden'
           whiteSpace='nowrap'
           textOverflow='ellipsis'
@@ -40,13 +40,13 @@ const RectangleNode = ({ data }) => {
       <Handle
         type="source"
         position="bottom"
-        id={`${data.id}.bottom`}
+        id={`${id}.bottom`}
         style={{ borderRadius: 0 }}
       />
       <Handle
         type="source"
         position="left"
-        id={`${data.id}.left`}
+        id={`${id}.left`}
         style={{ borderRadius: 0 }}
       />
     </Box>
@@ -54,6 +54,7 @@ const RectangleNode = ({ data }) => {
 };
 
 RectangleNode.propTypes = {
+  id: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
 };
 

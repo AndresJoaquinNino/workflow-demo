@@ -2,7 +2,7 @@ import { Handle } from "reactflow";
 import PropTypes from 'prop-types';
 import { Box, Text, Tooltip } from "@chakra-ui/react";
 
-const Diamond = ({ data }) => {
+const Diamond = ({ id, data }) => {
 
   const DOTS_SPACING = '-25%';
   const DIAMOND_SIZE = 110;
@@ -32,18 +32,18 @@ const Diamond = ({ data }) => {
         <Handle
           type="target"
           position="top"
-          id={`${data.id}.top`}
+          id={`${id}.top`}
           style={{ top: DOTS_SPACING }}
         />
         <Handle
           type="source"
           position="right"
-          id={`${data.id}.right`}
+          id={`${id}.right`}
           style={{ right: DOTS_SPACING }}
         />
         <Tooltip label={data.label}>
           <Text
-            id={data.id}
+            id={id}
             overflow='hidden'
             whiteSpace='nowrap'
             textOverflow='ellipsis'
@@ -54,13 +54,13 @@ const Diamond = ({ data }) => {
         <Handle
           type="source"
           position="bottom"
-          id={`${data.id}.bottom`}
+          id={`${id}.bottom`}
           style={{ bottom: DOTS_SPACING }}
         />
         <Handle
           type="source"
           position="left"
-          id={`${data.id}.left`}
+          id={`${id}.left`}
           style={{ left: DOTS_SPACING }}
         />
       </Box>
@@ -69,6 +69,7 @@ const Diamond = ({ data }) => {
 };
 
 Diamond.propTypes = {
+  id: PropTypes.string.isRequired,
   data: PropTypes.object.isRequired,
 };
 
