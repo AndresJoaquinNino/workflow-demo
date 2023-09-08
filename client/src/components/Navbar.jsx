@@ -1,6 +1,6 @@
 import { Box, HStack, Text, Button } from "@chakra-ui/react";
 import { MdLogout } from "react-icons/md";
-import { COMPONENT_WIDTH } from "../utils";
+import { COMPONENT_WIDTH, COMPONENT_HEIGHT } from "../utils";
 
 const Navbar = () => {
   return (
@@ -15,7 +15,7 @@ const Navbar = () => {
       <Box
         as='nav'
         w='100%'
-        h='60px'
+        h={COMPONENT_HEIGHT.navbar}
         borderWidth='1px'
         borderStyle='solid'
         borderColor='gray.200'
