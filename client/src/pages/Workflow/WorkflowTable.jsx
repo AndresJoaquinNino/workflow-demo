@@ -12,6 +12,7 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
+import { Link } from 'react-router-dom';
 import { FaCirclePlus, FaTrashCan, FaPenToSquare } from "react-icons/fa6";
 import { MdOutlineInfo } from "react-icons/md";
 import PropTypes from 'prop-types';
@@ -29,9 +30,11 @@ const WorkflowsTable = ({ workflows, openDeleteModal }) => {
         <Text fontSize='2xl'>
           Records
         </Text>
-        <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
-          New Workflow
-        </Button>
+        <Link to='/workflow/create'>
+          <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
+            New Workflow
+          </Button>
+        </Link>
       </HStack>
       <TableContainer>
         <Table

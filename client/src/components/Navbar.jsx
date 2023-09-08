@@ -1,4 +1,5 @@
 import { Box, HStack, Text, Button } from "@chakra-ui/react";
+import { Link } from 'react-router-dom';
 import { MdLogout } from "react-icons/md";
 import { COMPONENT_WIDTH, COMPONENT_HEIGHT } from "../utils";
 
@@ -27,9 +28,11 @@ const Navbar = () => {
           alignItems='center'
           justifyContent='space-between'
         >
-          <Text as='b' fontSize='2xl' color='blue.800'>
-            My Workflows
-          </Text>
+          <Link to='/workflow'>
+            <Text as='b' fontSize='2xl' color='blue.800'>
+              My Workflows
+            </Text>
+          </Link>
           <Button
             colorScheme='facebook'
             rightIcon={<MdLogout size='1.1rem' />}
