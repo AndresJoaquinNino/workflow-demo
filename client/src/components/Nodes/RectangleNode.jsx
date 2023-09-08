@@ -1,14 +1,14 @@
 import { Handle } from "reactflow";
 import PropTypes from 'prop-types';
-import { Box } from "@chakra-ui/react";
+import { Box, Text, Tooltip } from "@chakra-ui/react";
 
 const RectangleNode = ({ data }) => {
   return (
     <Box
       as="div"
       p={4}
-      minW={200}
-      minH={100}
+      w={200}
+      h={100}
       borderRadius={5}
       background="blue.300"
       display="flex"
@@ -27,7 +27,16 @@ const RectangleNode = ({ data }) => {
         id={`${data.id}.right`}
         style={{ borderRadius: 0 }}
       />
-      <div id={data.id}>{data.label}</div>
+      <Tooltip label={data.label}>
+        <Text
+          id={data.id}
+          overflow='hidden'
+          whiteSpace='nowrap'
+          textOverflow='ellipsis'
+        >
+          {data.label}
+        </Text>
+      </Tooltip>
       <Handle
         type="source"
         position="bottom"

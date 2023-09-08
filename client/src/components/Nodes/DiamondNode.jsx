@@ -1,6 +1,6 @@
 import { Handle } from "reactflow";
 import PropTypes from 'prop-types';
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Tooltip } from "@chakra-ui/react";
 
 const Diamond = ({ data }) => {
 
@@ -41,6 +41,7 @@ const Diamond = ({ data }) => {
           id={`${data.id}.right`}
           style={{ right: DOTS_SPACING }}
         />
+        <Tooltip label={data.label}>
           <Text
             id={data.id}
             overflow='hidden'
@@ -49,6 +50,7 @@ const Diamond = ({ data }) => {
           >
             {data.label}
           </Text>
+        </Tooltip>
         <Handle
           type="source"
           position="bottom"
