@@ -9,11 +9,16 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
   const addNewNode = (event) => {
     event.preventDefault();
     const entityName = event.target.entityName.value
+    const entityType = event.target.entityType.value
+    const NODE_SHAPES = {
+      process: 'rectangle',
+      conditional: 'diamond',
+    }
     const newNode = {
       id: (nodes.length + 1).toString(),
       data: { label: entityName },
       position: { x: 100, y: 100 },
-      type: 'rectangle',
+      type: NODE_SHAPES[entityType],
     };
     dispatch({ type: 'ADD_NODE', payload: newNode })
     event.target.entityName.value = ''
@@ -50,8 +55,8 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
             colorScheme='blue'
             variant='filled'
           >
-            <option value='process'>Process</option>
-            <option value='condition'>Condition</option>
+            <option value='process'>Action</option>
+            <option value='conditional'>Condition</option>
           </Select>
           <Button
             w='100%'
