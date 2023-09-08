@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ENV_PATH } from './config/constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { WorkflowModule } from './workflow/workflow.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
       autoLoadEntities: true,
     }),
+    WorkflowModule,
   ],
   controllers: [],
   providers: [],
