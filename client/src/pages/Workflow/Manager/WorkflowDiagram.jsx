@@ -9,13 +9,23 @@ import ReactFlow, {
   MarkerType,
 } from 'reactflow';
 import { nodeTypes } from '../../../components/Nodes';
+import { initFocusElement } from './';
 
 const WorkflowDiagram = ({ state, dispatch }) => {
 
   const { nodes, edges } = state
 
   const handleFocus = (element, elementType) => {
-    dispatch({ type: 'SET_FOCUS_ELEMENT', payload: { type: elementType, id: element.id } })
+
+    const elementData = {
+      type: elementType,
+      id: element.id
+    }
+
+    const payload = element.data?.isDeletable === false ? initFocusElement : elementData
+
+    dispatch({ type: 'SET_FOCUS_ELEMENT', payload: payload })
+
   }
 
   const onNodesChange = useCallback(
