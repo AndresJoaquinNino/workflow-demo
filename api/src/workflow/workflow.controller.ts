@@ -10,10 +10,14 @@ import {
   ValidationPipe,
   HttpCode,
   HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { WorkflowService } from './workflow.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
+import { Workflow } from './entities/workflow.entity';
+import { PaginatedItemsDto } from 'src/shared/dto/paginated-items.dto';
+import { PaginatedResponse } from 'src/shared/types/paginated-response';
 
 @Controller('workflow')
 export class WorkflowController {
@@ -29,8 +33,38 @@ export class WorkflowController {
   }
 
   @Get()
-  findAll() {
-    return this.workflowService.findAll();
+  @HttpCode(HttpStatus.OK)
+  async findAll(
+    @Query() query: PaginatedItemsDto,
+  ): Promise<Workflow[] | PaginatedResponse> {
+    const { page, limit = 10 } = query;
+
+    if (!page) {
+      return this.workflowService.findAll();
+    }
+
+    const [workflows, totalWorkflows] = await this.workflowService.paginate(
+      page,
+      limit,
+    );
+
+    const totalPages = Math.ceil(totalWorkflows / limit);
+
+    if (page > totalPages && totalPages > 0) {
+      return {
+        data: [],
+        totalItems: totalWorkflows,
+        totalPages: totalPages,
+        currentPage: page,
+      };
+    }
+
+    return {
+      data: workflows,
+      totalItems: totalWorkflows,
+      totalPages: totalPages,
+      currentPage: page,
+    };
   }
 
   @Get(':id')

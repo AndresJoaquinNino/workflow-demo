@@ -17,8 +17,15 @@ export class WorkflowService {
     return this.workflowRepository.save(workflow);
   }
 
+  async paginate(page: number, limit: number): Promise<[Workflow[], number]> {
+    return this.workflowRepository.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+  }
+
   findAll() {
-    return `This action returns all workflow`;
+    return this.workflowRepository.find();
   }
 
   findOne(id: number) {
