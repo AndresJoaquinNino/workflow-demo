@@ -4,6 +4,7 @@ import { ENV_PATH } from './config/constants';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkflowModule } from './workflow/workflow.module';
 import { NodeModule } from './node/node.module';
+import { EdgeModule } from './edge/edge.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { NodeModule } from './node/node.module';
     }),
     WorkflowModule,
     NodeModule,
+    EdgeModule,
   ],
   controllers: [],
   providers: [],
