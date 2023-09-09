@@ -28,8 +28,10 @@ export class WorkflowService {
     return this.workflowRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workflow`;
+  findOne(id: number): Promise<Workflow> {
+    return this.workflowRepository.findOne({
+      where: { id },
+    });
   }
 
   update(id: number, updateWorkflowDto: UpdateWorkflowDto) {

@@ -11,6 +11,7 @@ import {
   HttpCode,
   HttpStatus,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { WorkflowService } from './workflow.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
@@ -68,8 +69,13 @@ export class WorkflowController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workflowService.findOne(+id);
+  @HttpCode(HttpStatus.OK)
+  async findOne(@Param('id') id: string): Promise<Workflow> {
+    const workflow = await this.workflowService.findOne(+id);
+    if (!workflow) {
+      throw new NotFoundException([`Workflow with ID ${id} not found`]);
+    }
+    return workflow;
   }
 
   @Patch(':id')
