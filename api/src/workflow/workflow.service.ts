@@ -52,7 +52,18 @@ export class WorkflowService {
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workflow`;
+  async softDelete(id: number): Promise<Workflow> {
+    const workflow = await this.workflowRepository.findOne({
+      where: { id },
+    });
+
+    if (!workflow) {
+      throw new NotFoundException([`Workflow with ID ${id} not found`]);
+    }
+
+    return this.workflowRepository.save({
+      ...workflow,
+      deleted_at: new Date(),
+    });
   }
 }

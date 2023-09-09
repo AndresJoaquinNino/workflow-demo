@@ -88,7 +88,7 @@ export class WorkflowController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workflowService.remove(+id);
+  async remove(@Param('id') id: string): Promise<Workflow> {
+    return this.workflowService.softDelete(+id);
   }
 }
