@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { ENV_PATH } from './config/constants';
+import { ENV_PATH } from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkflowModule } from './workflow/workflow.module';
 import { NodeModule } from './node/node.module';
