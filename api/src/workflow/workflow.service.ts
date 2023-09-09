@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Workflow } from './entities/workflow.entity';
@@ -34,8 +34,22 @@ export class WorkflowService {
     });
   }
 
-  update(id: number, updateWorkflowDto: UpdateWorkflowDto) {
-    return `This action updates a #${id} workflow`;
+  async update(
+    id: number,
+    updateWorkflowDto: UpdateWorkflowDto,
+  ): Promise<Workflow> {
+    const workflow = await this.workflowRepository.findOne({
+      where: { id },
+    });
+
+    if (!workflow) {
+      throw new NotFoundException([`Workflow with ID ${id} not found`]);
+    }
+
+    return this.workflowRepository.save({
+      ...workflow,
+      ...updateWorkflowDto,
+    });
   }
 
   remove(id: number) {

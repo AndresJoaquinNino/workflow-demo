@@ -79,8 +79,12 @@ export class WorkflowController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkflowDto: UpdateWorkflowDto) {
-    return this.workflowService.update(+id, updateWorkflowDto);
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateWorkflowDto: UpdateWorkflowDto,
+  ): Promise<Workflow> {
+    return await this.workflowService.update(+id, updateWorkflowDto);
   }
 
   @Delete(':id')
