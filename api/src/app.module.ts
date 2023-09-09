@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { ENV_PATH } from './config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ENV_PATH, DatabaseConfig } from './config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { WorkflowModule } from './workflow/workflow.module';
 import { NodeModule } from './node/node.module';
@@ -11,16 +11,14 @@ import { EdgeModule } from './edge/edge.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ENV_PATH,
+      load: [DatabaseConfig],
     }),
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.MYSQL_HOST,
-      port: parseInt(process.env.MYSQL_PORT, 10),
-      username: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.MYSQL_DATABASE,
-      synchronize: true,
-      autoLoadEntities: true,
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
+      }),
+      inject: [ConfigService],
     }),
     WorkflowModule,
     NodeModule,
