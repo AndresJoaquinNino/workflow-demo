@@ -10,5 +10,6 @@ import { NodeType } from './entities/node-type.entity';
   imports: [TypeOrmModule.forFeature([Node, NodeType, NodeShape])],
   controllers: [NodeController],
   providers: [NodeService],
+  exports: [NodeService],
 })
 export class NodeModule {}

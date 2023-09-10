@@ -14,6 +14,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { WorkflowService } from './workflow.service';
+import { NodeService } from 'src/node/node.service';
+import { EdgeService } from 'src/edge/edge.service';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
 import { Workflow } from './entities/workflow.entity';
@@ -22,15 +24,35 @@ import { PaginatedResponse } from 'src/shared/types/paginated-response';
 
 @Controller('workflow')
 export class WorkflowController {
-  constructor(private readonly workflowService: WorkflowService) {}
+  constructor(
+    private readonly workflowService: WorkflowService,
+    private readonly nodeService: NodeService,
+    private readonly edgeService: EdgeService,
+  ) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   @HttpCode(HttpStatus.CREATED)
-  create(
+  async create(
     @Body() createWorkflowDto: CreateWorkflowDto,
   ): Promise<CreateWorkflowDto> {
-    return this.workflowService.create(createWorkflowDto);
+    const workflowStored = await this.workflowService.create(createWorkflowDto);
+
+    const nodes = createWorkflowDto.nodes.map((node) => ({
+      ...node,
+      workflow: workflowStored,
+    }));
+
+    const edges = createWorkflowDto.edges.map((edge) => ({
+      ...edge,
+      workflow: workflowStored,
+    }));
+
+    await this.nodeService.createMultipleNodes(nodes);
+    await this.edgeService.createMultipleEdges(edges);
+    const workflow = await this.workflowService.findOne(workflowStored.id);
+
+    return workflow;
   }
 
   @Get()

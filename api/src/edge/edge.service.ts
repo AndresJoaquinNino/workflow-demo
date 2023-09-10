@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEdgeDto } from './dto/create-edge.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Edge } from './entities/edge.entity';
 
 @Injectable()
 export class EdgeService {
-  create(createEdgeDto: CreateEdgeDto) {
-    return 'This action adds a new edge';
+  constructor(
+    @InjectRepository(Edge)
+    private edgeRepository: Repository<Edge>,
+  ) {}
+
+  createMultipleEdges(edges: Edge[]): Promise<Edge[]> {
+    return this.edgeRepository.save(edges);
   }
 }

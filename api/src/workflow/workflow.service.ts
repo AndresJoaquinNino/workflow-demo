@@ -31,6 +31,7 @@ export class WorkflowService {
   findOne(id: number): Promise<Workflow> {
     return this.workflowRepository.findOne({
       where: { id },
+      relations: ['nodes', 'edges'],
     });
   }
 
