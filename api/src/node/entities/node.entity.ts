@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
+import { IsInt, IsNotEmpty } from 'class-validator';
 import { NodeType } from './node-type.entity';
 import { Workflow } from 'src/workflow/entities/workflow.entity';
 
@@ -14,14 +15,26 @@ export class Node {
   id: number;
 
   @Column({ unique: true })
-  name: string;
+  @IsNotEmpty({ message: 'reference is required' })
+  reference: string;
 
   @Column()
-  description: string;
+  @IsNotEmpty({ message: 'text is required' })
+  text: string;
+
+  @Column({ name: 'position_x' })
+  @IsInt()
+  @IsNotEmpty({ message: 'positionX is required' })
+  positionX: number;
+
+  @Column({ name: 'position_y' })
+  @IsInt()
+  @IsNotEmpty({ message: 'positionY is required' })
+  positionY: number;
 
   @ManyToOne(() => NodeType, (nodeType) => nodeType.nodes)
   @JoinColumn({ name: 'node_type_id' })
-  nodeTypes: NodeType;
+  nodeType: NodeType;
 
   @ManyToOne(() => Workflow, (workflow) => workflow.nodes)
   @JoinColumn({ name: 'workflow_id' })

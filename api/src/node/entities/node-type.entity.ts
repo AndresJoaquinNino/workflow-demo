@@ -17,7 +17,7 @@ export class NodeType {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => Node, (node) => node.nodeTypes)
+  @OneToMany(() => Node, (node) => node.nodeType)
   nodes: Node[];
 
   @ManyToOne(() => NodeShape, (nodeShape) => nodeShape.nodeTypes)
