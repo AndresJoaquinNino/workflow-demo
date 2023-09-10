@@ -30,4 +30,7 @@ export class Edge {
   @ManyToOne(() => Workflow, (workflow) => workflow.edges)
   @JoinColumn({ name: 'workflow_id' })
   workflow: Workflow;
+
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+  created_at: Date;
 }
