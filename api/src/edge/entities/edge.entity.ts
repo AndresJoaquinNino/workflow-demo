@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Workflow } from '../../workflow/entities/workflow.entity';
 
 @Entity({ name: 'edge' })
 export class Edge {
@@ -19,4 +26,8 @@ export class Edge {
 
   @Column({ name: 'target_handle' })
   targetHandle: string;
+
+  @ManyToOne(() => Workflow, (workflow) => workflow.edges)
+  @JoinColumn({ name: 'workflow_id' })
+  workflow: Workflow[];
 }
