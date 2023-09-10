@@ -29,5 +29,5 @@ export class Edge {
 
   @ManyToOne(() => Workflow, (workflow) => workflow.edges)
   @JoinColumn({ name: 'workflow_id' })
-  workflow: Workflow[];
+  workflow: Workflow;
 }
