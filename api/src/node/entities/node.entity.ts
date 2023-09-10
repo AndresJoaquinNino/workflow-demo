@@ -14,7 +14,7 @@ export class Node {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   @IsNotEmpty({ message: 'reference is required' })
   reference: string;
 
