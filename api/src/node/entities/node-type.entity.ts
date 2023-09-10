@@ -22,5 +22,5 @@ export class NodeType {
 
   @ManyToOne(() => NodeShape, (nodeShape) => nodeShape.nodeTypes)
   @JoinColumn({ name: 'node_shape_id' })
-  nodeShapes: NodeShape;
+  nodeShape: NodeShape;
 }

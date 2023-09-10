@@ -9,6 +9,6 @@ export class NodeShape {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => NodeType, (nodeType) => nodeType.nodeShapes)
+  @OneToMany(() => NodeType, (nodeType) => nodeType.nodeShape)
   nodeTypes: NodeType[];
 }
