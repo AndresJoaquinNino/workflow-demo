@@ -4,6 +4,7 @@ import {
   Column,
   JoinColumn,
   ManyToOne,
+  DeleteDateColumn,
 } from 'typeorm';
 import { IsInt, IsNotEmpty } from 'class-validator';
 import { NodeType } from './node-type.entity';
@@ -42,4 +43,7 @@ export class Node {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deleted_at: Date;
 }

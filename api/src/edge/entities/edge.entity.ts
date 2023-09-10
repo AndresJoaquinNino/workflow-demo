@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Workflow } from '../../workflow/entities/workflow.entity';
 
@@ -33,4 +34,7 @@ export class Edge {
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
+
+  @DeleteDateColumn({ type: 'datetime', nullable: true })
+  deleted_at: Date;
 }
