@@ -30,6 +30,7 @@ const WorkflowsTable = ({ openDeleteModal }) => {
   const ROWS_QUANTITY = 10;
 
   const [searchParams, setSearchParams] = useSearchParams();
+  if(searchParams.get('page') === null) searchParams.set('page', 1);
   const queryParams = getUrlParams(searchParams);
   const [notifyApiError, setNotifyApiError] = useState(true);
 
