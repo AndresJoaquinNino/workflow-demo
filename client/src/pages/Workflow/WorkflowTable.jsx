@@ -14,10 +14,36 @@ import {
 } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
 import { FaCirclePlus, FaTrashCan, FaPenToSquare } from "react-icons/fa6";
-import { MdOutlineInfo } from "react-icons/md";
 import PropTypes from 'prop-types';
+import { useQuery } from '@tanstack/react-query';
+import { paginateWorkflows } from "./../../repository";
+import { Skeleton } from '@chakra-ui/react'
+import { useSearchParams } from "react-router-dom";
+import { arrayFiller, getUrlParams } from "./../../utils";
 
-const WorkflowsTable = ({ workflows, openDeleteModal }) => {
+const WorkflowsTable = ({ openDeleteModal }) => {
+
+  const ROW_HEIGHT = 8;
+  const ROWS_QUANTITY = 10;
+
+  const [searchParams] = useSearchParams();
+  const queryParams = getUrlParams(searchParams);
+
+  const {
+    data: response,
+    isError,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ['workflowTable', queryParams],
+    queryFn: () => paginateWorkflows(queryParams),
+    refetchOnWindowFocus: false,
+  });
+
+  const isFullyLoaded = !isLoading && !isFetching && !isError;
+
+  const tableRows = response ? arrayFiller(response?.data, ROWS_QUANTITY, {}) : [];
+
   return (
     <Box
       borderWidth='1px'
@@ -46,32 +72,52 @@ const WorkflowsTable = ({ workflows, openDeleteModal }) => {
         >
           <Thead>
             <Tr>
-              <Th w='20%'>ID</Th>
-              <Th w='50%'>Name</Th>
+              <Th w='10%'>ID</Th>
+              <Th w='25%'>Name</Th>
+              <Th w='35%'>Description</Th>
               <Th w='20%'>Created at</Th>
               <Th w='10%'>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {workflows.map((workflow) => (
-              <Tr key={workflow.id}>
-                <Td>{workflow.id}</Td>
-                <Td>{workflow.name}</Td>
-                <Td>{workflow.created_at}</Td>
-                <Td>
-                  <HStack spacing={2}>
-                    <IconButton icon={<MdOutlineInfo size='1.25rem' />} colorScheme="teal" size="sm" mr="2" />
-                    <IconButton icon={<FaPenToSquare />} colorScheme="blue" size="sm" mr="2" />
-                    <IconButton
-                      colorScheme="red"
-                      size="sm"
-                      icon={<FaTrashCan />}
-                      onClick={() => openDeleteModal(workflow)}
-                    />
-                  </HStack>
-                </Td>
-              </Tr>
-            ))}
+            {
+              isFullyLoaded
+              &&
+              tableRows.map((workflow, index) => (
+                <Tr key={workflow?.id ?? index}>
+                  <Td>{workflow.id}</Td>
+                  <Td>{workflow.name}</Td>
+                  <Td>{workflow.description}</Td>
+                  <Td>{workflow.created_at}</Td>
+                  <Td>
+                    {
+                      workflow?.id
+                      ?
+                      <HStack spacing={2}>
+                        <IconButton icon={<FaPenToSquare />} colorScheme="teal" size="sm" mr="2" />
+                        <IconButton
+                          colorScheme="red"
+                          size="sm"
+                          icon={<FaTrashCan />}
+                          onClick={() => openDeleteModal(workflow)}
+                        />
+                      </HStack>
+                      : <Box height={ROW_HEIGHT}></Box>
+                    }
+                  </Td>
+                </Tr>
+              ))
+            }
+            {
+              (isLoading || isFetching) &&
+              [...Array(ROWS_QUANTITY)].map((element, index) => (
+                <Tr key={index}>
+                  <Td colSpan="5">
+                    <Skeleton height={ROW_HEIGHT}/>
+                  </Td>
+                </Tr>
+              ))
+            }
           </Tbody>
         </Table>
       </TableContainer>
@@ -80,7 +126,6 @@ const WorkflowsTable = ({ workflows, openDeleteModal }) => {
 };
 
 WorkflowsTable.propTypes = {
-  workflows: PropTypes.array.isRequired,
   openDeleteModal: PropTypes.func.isRequired,
 };
 
