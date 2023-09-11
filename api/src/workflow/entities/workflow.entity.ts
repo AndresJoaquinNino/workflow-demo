@@ -6,7 +6,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Node } from '../../node/entities/node.entity';
-import { Edge } from 'src/edge/entities/edge.entity';
+import { Edge } from '../../edge/entities/edge.entity';
 
 @Entity({ name: 'workflow' })
 export class Workflow {

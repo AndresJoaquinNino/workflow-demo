@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { IsInt, IsNotEmpty } from 'class-validator';
 import { NodeType } from './node-type.entity';
-import { Workflow } from 'src/workflow/entities/workflow.entity';
+import { Workflow } from '../../workflow/entities/workflow.entity';
 
 @Entity({ name: 'node' })
 export class Node {
