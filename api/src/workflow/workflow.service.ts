@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Workflow } from './entities/workflow.entity';
 import { CreateWorkflowDto } from './dto/create-workflow.dto';
 import { UpdateWorkflowDto } from './dto/update-workflow.dto';
@@ -54,18 +54,7 @@ export class WorkflowService {
     });
   }
 
-  async softDelete(id: number): Promise<Workflow> {
-    const workflow = await this.workflowRepository.findOne({
-      where: { id },
-    });
-
-    if (!workflow) {
-      throw new NotFoundException([`Workflow with ID ${id} not found`]);
-    }
-
-    return this.workflowRepository.save({
-      ...workflow,
-      deleted_at: new Date(),
-    });
+  async softDelete(id: number): Promise<UpdateResult> {
+    return this.workflowRepository.softDelete(id);
   }
 }
