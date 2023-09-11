@@ -43,11 +43,12 @@ const WorkflowsTable = ({ openDeleteModal }) => {
     queryKey: ['workflowTable', queryParams],
     queryFn: () => paginateWorkflows(queryParams),
     refetchOnWindowFocus: false,
+    retry: false,
   });
 
   const { addNotification } = useNotificationContext();
 
-  if (error && notifyApiError) {
+  if (!isLoading && error && notifyApiError) {
     setNotifyApiError(false);
     addNotification({
       message: error?.message ?? 'Something went wrong',
