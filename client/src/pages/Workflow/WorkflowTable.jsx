@@ -20,13 +20,14 @@ import { paginateWorkflows } from "./../../repository";
 import { Skeleton } from '@chakra-ui/react'
 import { useSearchParams } from "react-router-dom";
 import { arrayFiller, getUrlParams } from "./../../utils";
+import { Pagination } from "./../../components";
 
 const WorkflowsTable = ({ openDeleteModal }) => {
 
   const ROW_HEIGHT = 8;
   const ROWS_QUANTITY = 10;
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = getUrlParams(searchParams);
 
   const {
@@ -62,7 +63,7 @@ const WorkflowsTable = ({ openDeleteModal }) => {
           </Button>
         </Link>
       </HStack>
-      <TableContainer>
+      <TableContainer mb={5}>
         <Table
           variant="simple"
           __css={{
@@ -92,17 +93,17 @@ const WorkflowsTable = ({ openDeleteModal }) => {
                   <Td>
                     {
                       workflow?.id
-                      ?
-                      <HStack spacing={2}>
-                        <IconButton icon={<FaPenToSquare />} colorScheme="teal" size="sm" mr="2" />
-                        <IconButton
-                          colorScheme="red"
-                          size="sm"
-                          icon={<FaTrashCan />}
-                          onClick={() => openDeleteModal(workflow)}
-                        />
-                      </HStack>
-                      : <Box height={ROW_HEIGHT}></Box>
+                        ?
+                        <HStack spacing={2}>
+                          <IconButton icon={<FaPenToSquare />} colorScheme="teal" size="sm" mr="2" />
+                          <IconButton
+                            colorScheme="red"
+                            size="sm"
+                            icon={<FaTrashCan />}
+                            onClick={() => openDeleteModal(workflow)}
+                          />
+                        </HStack>
+                        : <Box height={ROW_HEIGHT}></Box>
                     }
                   </Td>
                 </Tr>
@@ -113,7 +114,7 @@ const WorkflowsTable = ({ openDeleteModal }) => {
               [...Array(ROWS_QUANTITY)].map((element, index) => (
                 <Tr key={index}>
                   <Td colSpan="5">
-                    <Skeleton height={ROW_HEIGHT}/>
+                    <Skeleton height={ROW_HEIGHT} />
                   </Td>
                 </Tr>
               ))
@@ -121,6 +122,18 @@ const WorkflowsTable = ({ openDeleteModal }) => {
           </Tbody>
         </Table>
       </TableContainer>
+      {
+        isFullyLoaded
+          ? <Pagination
+            currentPage={parseInt(response?.currentPage, 10)}
+            totalPages={response?.totalPages}
+            onPageChange={(page) => {
+              queryParams.page = page;
+              setSearchParams(queryParams);
+            }}
+          />
+          : <Skeleton height={ROW_HEIGHT} width='50%' mr='auto' ml='auto'/>
+      }
     </Box>
   );
 };
