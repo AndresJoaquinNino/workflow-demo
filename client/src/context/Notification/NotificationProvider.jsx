@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NotificationContext } from "./";
+import { Notification, NotificationContainer } from "../../components";
 import PropTypes from 'prop-types';
 
 const NotificationProvider = ({ children }) => {
@@ -7,7 +8,6 @@ const NotificationProvider = ({ children }) => {
   const NOTIFICATION_LIFE_TIME = 1 * 1000;
 
   const [notifications, setNotifications] = useState([]);
-  console.log(notifications);
 
   const addNotification = ({ message, autoDelete }) => {
     const id = new Date().getTime();
@@ -15,7 +15,7 @@ const NotificationProvider = ({ children }) => {
 
     setNotifications([...notifications, notification]);
 
-    if(autoDelete) {
+    if (autoDelete) {
       setTimeout(() => {
         removeNotification(id);
       }, NOTIFICATION_LIFE_TIME);
@@ -23,7 +23,6 @@ const NotificationProvider = ({ children }) => {
   }
 
   const removeNotification = (notification) => {
-    console.log(notification);
     setNotifications(notifications.filter(n => n.id !== notification.id));
   }
 
@@ -33,7 +32,21 @@ const NotificationProvider = ({ children }) => {
       addNotification,
       removeNotification,
     }}>
-      { children }
+      {
+        children
+      }
+      <NotificationContainer>
+        {
+          notifications.map((notification, index) => (
+            <Notification
+              key={index}
+              message={notification.message}
+              handleDelete={() => removeNotification(notification)}
+            />
+          ))
+        }
+
+      </NotificationContainer>
     </NotificationContext.Provider>
   );
 }
