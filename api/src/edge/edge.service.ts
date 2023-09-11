@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { Edge } from './entities/edge.entity';
 
 @Injectable()
@@ -12,5 +12,9 @@ export class EdgeService {
 
   createMultipleEdges(edges: Edge[]): Promise<Edge[]> {
     return this.edgeRepository.save(edges);
+  }
+
+  async softDeleteEdgesByWorkflowId(workflowId: number): Promise<UpdateResult> {
+    return this.edgeRepository.softDelete({ workflow: { id: workflowId } });
   }
 }

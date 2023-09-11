@@ -106,7 +106,36 @@ export class WorkflowController {
     @Param('id') id: string,
     @Body() updateWorkflowDto: UpdateWorkflowDto,
   ): Promise<Workflow> {
-    return await this.workflowService.update(+id, updateWorkflowDto);
+    const storedWorkflow = await this.workflowService.findOne(+id);
+
+    if (!storedWorkflow) {
+      throw new NotFoundException([`Workflow with ID ${id} not found`]);
+    }
+
+    const workflowUpdated = await this.workflowService.update(
+      +id,
+      updateWorkflowDto,
+    );
+
+    if (storedWorkflow.nodes) {
+      await this.nodeService.softDeleteNodesByWorkflowId(+id);
+      const newNodes = updateWorkflowDto.nodes.map((node) => ({
+        ...node,
+        workflow: workflowUpdated,
+      }));
+      await this.nodeService.createMultipleNodes(newNodes);
+    }
+
+    if (storedWorkflow.edges) {
+      await this.edgeService.softDeleteEdgesByWorkflowId(+id);
+      const newEdges = updateWorkflowDto.edges.map((edge) => ({
+        ...edge,
+        workflow: workflowUpdated,
+      }));
+      await this.edgeService.createMultipleEdges(newEdges);
+    }
+
+    return await this.workflowService.findOne(+id);
   }
 
   @Delete(':id')

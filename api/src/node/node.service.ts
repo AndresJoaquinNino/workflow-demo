@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NodeType } from './entities/node-type.entity';
 import { Node } from './entities/node.entity';
@@ -21,5 +21,9 @@ export class NodeService {
 
   createMultipleNodes(nodes: Node[]): Promise<Node[]> {
     return this.nodeRepository.save(nodes);
+  }
+
+  async softDeleteNodesByWorkflowId(workflowId: number): Promise<UpdateResult> {
+    return this.nodeRepository.softDelete({ workflow: { id: workflowId } });
   }
 }

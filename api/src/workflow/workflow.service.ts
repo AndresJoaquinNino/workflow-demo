@@ -49,7 +49,8 @@ export class WorkflowService {
 
     return this.workflowRepository.save({
       ...workflow,
-      ...updateWorkflowDto,
+      name: updateWorkflowDto.name,
+      description: updateWorkflowDto.description,
     });
   }
 
