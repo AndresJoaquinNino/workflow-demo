@@ -17,3 +17,11 @@ export const arrayFiller = (array, quantity, value) => {
   }
   return [...array, ...newArray];
 }
+
+export const getUrlParams = (urlParams) => {
+  const params = {};
+  for (const [key, value] of urlParams) {
+    params[key] = value;
+  }
+  return params;
+}
