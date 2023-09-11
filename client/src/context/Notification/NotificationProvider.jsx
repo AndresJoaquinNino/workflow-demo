@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 const NotificationProvider = ({ children }) => {
 
-  const NOTIFICATION_LIFE_TIME = 1 * 1000;
+  const NOTIFICATION_LIFE_TIME = 5 * 1000;
 
   const [notifications, setNotifications] = useState([]);
 
