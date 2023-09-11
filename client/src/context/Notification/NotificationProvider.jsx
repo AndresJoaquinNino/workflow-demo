@@ -9,9 +9,9 @@ const NotificationProvider = ({ children }) => {
 
   const [notifications, setNotifications] = useState([]);
 
-  const addNotification = ({ message, autoDelete }) => {
+  const addNotification = ({ message, type, autoDelete }) => {
     const id = new Date().getTime();
-    const notification = { id, message };
+    const notification = { id, message, type };
 
     setNotifications([...notifications, notification]);
 
@@ -41,6 +41,7 @@ const NotificationProvider = ({ children }) => {
             <Notification
               key={index}
               message={notification.message}
+              type={notification.type}
               handleDelete={() => removeNotification(notification)}
             />
           ))

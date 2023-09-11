@@ -3,9 +3,15 @@ import { Box, Text, IconButton } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { FaXmark } from 'react-icons/fa6';
 
-const Notification = ({ message, handleDelete }) => {
+const Notification = ({ message, type, handleDelete }) => {
 
   const ICON_POSITION = 2;
+
+  const bgColors = {
+    error : 'red.500',
+    success: 'green.500',
+    info: 'blue.500',
+  }
 
   return (
       <motion.div
@@ -14,7 +20,7 @@ const Notification = ({ message, handleDelete }) => {
         exit={{ opacity: 0 }}
       >
         <Box
-          bg="blue.500"
+          bg={bgColors[type]}
           color="white"
           borderRadius="md"
           boxShadow="lg"
@@ -51,6 +57,7 @@ const Notification = ({ message, handleDelete }) => {
 
 Notification.propTypes = {
   message: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['error', 'success', 'info']).isRequired,
   handleDelete: PropTypes.func.isRequired,
 }
 
