@@ -71,7 +71,9 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
       >
         <VStack align='start'>
           <Box w='100%' as='form' onSubmit={addNewNode}>
-            <Heading size='lg' mb='4'>Add New Node</Heading>
+            <Heading size='lg' mb='4' textAlign='center' color='blue.900'>
+              Add New Node
+            </Heading>
             <Text mb='1'> Entity Name </Text>
             <Input mb='4' name='entityName' placeholder='...' />
             <Text mb='1'> Entity Type </Text>
