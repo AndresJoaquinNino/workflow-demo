@@ -8,7 +8,7 @@ export default registerAs('database', () => ({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
   logging: true,
-  synchronize: true,
+  synchronize: false,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   migrations: [__dirname + '/../migrations/*{.ts,.js}'],
   migrationsTableName: 'migrations',
