@@ -139,7 +139,21 @@ export class WorkflowController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string): Promise<Workflow> {
-    return this.workflowService.softDelete(+id);
+  async remove(@Param('id') id: string): Promise<void> {
+    const workflowToDelete = await this.workflowService.findOne(+id);
+
+    if (!workflowToDelete) {
+      throw new NotFoundException([`Workflow with ID ${id} not found`]);
+    }
+
+    if (workflowToDelete.nodes) {
+      await this.nodeService.softDeleteNodesByWorkflowId(+id);
+    }
+
+    if (workflowToDelete.edges) {
+      await this.edgeService.softDeleteEdgesByWorkflowId(+id);
+    }
+
+    await this.workflowService.softDelete(workflowToDelete.id);
   }
 }
