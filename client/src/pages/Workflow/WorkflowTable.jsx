@@ -30,7 +30,7 @@ const WorkflowsTable = ({ workflows, openDeleteModal }) => {
         <Text fontSize='2xl'>
           Records
         </Text>
-        <Link to='/workflow/create'>
+        <Link to='/create'>
           <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
             New Workflow
           </Button>
