@@ -21,6 +21,8 @@ import { Skeleton } from '@chakra-ui/react'
 import { useSearchParams } from "react-router-dom";
 import { arrayFiller, getUrlParams } from "./../../utils";
 import { Pagination } from "./../../components";
+import { useNotificationContext } from "./../../context/Notification";
+import { useState } from "react";
 
 const WorkflowsTable = ({ openDeleteModal }) => {
 
@@ -29,9 +31,11 @@ const WorkflowsTable = ({ openDeleteModal }) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const queryParams = getUrlParams(searchParams);
+  const [notifyApiError, setNotifyApiError] = useState(true);
 
   const {
     data: response,
+    error,
     isError,
     isLoading,
     isFetching,
@@ -40,6 +44,17 @@ const WorkflowsTable = ({ openDeleteModal }) => {
     queryFn: () => paginateWorkflows(queryParams),
     refetchOnWindowFocus: false,
   });
+
+  const { addNotification } = useNotificationContext();
+
+  if (error && notifyApiError) {
+    setNotifyApiError(false);
+    addNotification({
+      message: error?.message ?? 'Something went wrong',
+      type: 'error',
+      autoDelete: false,
+    });
+  }
 
   const isFullyLoaded = !isLoading && !isFetching && !isError;
 
