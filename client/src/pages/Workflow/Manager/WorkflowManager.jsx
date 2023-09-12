@@ -36,7 +36,7 @@ function WorkflowManager() {
     isLoading,
     isFetching,
   } = useQuery({
-    queryKey: ['workflowTable', id],
+    queryKey: ['workflowManager', id],
     queryFn: () => getWorkflow(id),
     onSuccess: onSuccessFetch,
     onError: onErrorFetch,
