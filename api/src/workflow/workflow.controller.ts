@@ -37,19 +37,6 @@ export class WorkflowController {
     @Body() createWorkflowDto: CreateWorkflowDto,
   ): Promise<CreateWorkflowDto> {
     const workflowStored = await this.workflowService.create(createWorkflowDto);
-
-    const nodes = createWorkflowDto.nodes.map((node) => ({
-      ...node,
-      workflow: workflowStored,
-    }));
-
-    const edges = createWorkflowDto.edges.map((edge) => ({
-      ...edge,
-      workflow: workflowStored,
-    }));
-
-    await this.nodeService.createMultipleNodes(nodes);
-    await this.edgeService.createMultipleEdges(edges);
     const workflow = await this.workflowService.findOne(workflowStored.id);
 
     return workflow;
