@@ -1,5 +1,6 @@
 export const initialState = {
   isDeleteModalOpen: false,
+  isCreateModalOpen: false,
   workflow: {},
 };
 
@@ -15,6 +16,16 @@ export const reducer = (state, action) => {
       return {
         ...state,
         isDeleteModalOpen: false
+      };
+    case 'OPEN_CREATE_MODAL':
+      return {
+        ...state,
+        isCreateModalOpen: true,
+      };
+    case 'CLOSE_CREATE_MODAL':
+      return {
+        ...state,
+        isCreateModalOpen: false
       };
     default:
       return state;

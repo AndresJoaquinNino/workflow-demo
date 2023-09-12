@@ -9,6 +9,16 @@ export const paginateWorkflows = async (params) => {
   return response.data;
 }
 
+export const storeWorkflow = async (data) => {
+  const response = await api.request({
+    method: 'POST',
+    url: '/workflow',
+    data
+  });
+
+  return response.data;
+}
+
 export const deleteWorkflow = async (id) => {
   const response = await api.request({
     method: 'DELETE',

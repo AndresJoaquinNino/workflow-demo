@@ -12,25 +12,24 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
-import { Link } from 'react-router-dom';
 import { FaCirclePlus, FaTrashCan, FaPenToSquare } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { paginateWorkflows } from "./../../repository";
 import { Skeleton } from '@chakra-ui/react'
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, } from "react-router-dom";
 import { arrayFiller, getUrlParams } from "./../../utils";
 import { Pagination } from "./../../components";
 import { useNotificationContext } from "./../../context/Notification";
 import { useState } from "react";
 
-const WorkflowsTable = ({ openDeleteModal }) => {
+const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
 
   const ROW_HEIGHT = 8;
   const ROWS_QUANTITY = 10;
 
   const [searchParams, setSearchParams] = useSearchParams();
-  if(searchParams.get('page') === null) searchParams.set('page', 1);
+  if (searchParams.get('page') === null) searchParams.set('page', 1);
   const queryParams = getUrlParams(searchParams);
   const [notifyApiError, setNotifyApiError] = useState(true);
 
@@ -74,11 +73,15 @@ const WorkflowsTable = ({ openDeleteModal }) => {
         <Text fontSize='2xl'>
           Records
         </Text>
-        <Link to='/create'>
-          <Button rightIcon={<FaCirclePlus size='1.1rem' />} colorScheme="blue">
-            New Workflow
-          </Button>
-        </Link>
+        <Button
+          colorScheme="blue"
+          onClick={openCreateModal}
+          rightIcon={
+            <FaCirclePlus size='1.1rem' />
+          }
+        >
+          New Workflow
+        </Button>
       </HStack>
       <TableContainer mb={5}>
         <Table
@@ -149,13 +152,14 @@ const WorkflowsTable = ({ openDeleteModal }) => {
               setSearchParams(queryParams);
             }}
           />
-          : <Skeleton height={ROW_HEIGHT} width='50%' mr='auto' ml='auto'/>
+          : <Skeleton height={ROW_HEIGHT} width='50%' mr='auto' ml='auto' />
       }
     </Box>
   );
 };
 
 WorkflowsTable.propTypes = {
+  openCreateModal: PropTypes.func.isRequired,
   openDeleteModal: PropTypes.func.isRequired,
 };
 

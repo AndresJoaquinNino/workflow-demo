@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import { WorkflowTable, DeleteWorkflowModal } from ".";
+import { WorkflowTable, DeleteWorkflowModal, CreateWorkflowModal } from ".";
 import { reducer, initialState } from "./workflowReducer";
 
 const Workflows = () => {
@@ -14,10 +14,23 @@ const Workflows = () => {
     dispatch({ type: 'CLOSE_DELETE_MODAL' });
   };
 
+  const openCreateModal = () => {
+    dispatch({ type: 'OPEN_CREATE_MODAL' });
+  };
+
+  const closeCreateModal = () => {
+    dispatch({ type: 'CLOSE_CREATE_MODAL' });
+  };
+
   return (
     <>
       <WorkflowTable
         openDeleteModal={openDeleteModal}
+        openCreateModal={openCreateModal}
+      />
+      <CreateWorkflowModal
+        isOpen={state.isCreateModalOpen}
+        onClose={closeCreateModal}
       />
       <DeleteWorkflowModal
         workflow={state.workflow}
