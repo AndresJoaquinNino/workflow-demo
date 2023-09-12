@@ -104,7 +104,7 @@ const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
               isFullyLoaded
               &&
               tableRows.map((workflow, index) => (
-                <Tr key={workflow?.id ?? index}>
+                <Tr key={workflow?.id ?? `extra_${index}`}>
                   <Td>{workflow.id}</Td>
                   <Td>{workflow.name}</Td>
                   <Td>{workflow.description}</Td>
