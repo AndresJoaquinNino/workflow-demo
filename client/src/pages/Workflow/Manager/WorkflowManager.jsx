@@ -15,9 +15,8 @@ function WorkflowManager() {
 
   const onSuccessFetch = ([workflowData, nodeTypes]) => {
 
-    nodeTypes.filter(nodeType => !['init', 'end'].includes(nodeType.name.toLowerCase()))
     const localNodes = workflowData.nodes.map(node => {
-      const nodeTypeName = node.nodeType.name.toLowerCase()
+      const nodeTypeName = node.nodeType?.name.toLowerCase()
       const isImportanteNode = ['init', 'end'].includes(nodeTypeName) ? true : false;
 
       return {
