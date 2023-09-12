@@ -53,7 +53,7 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
         colorScheme="blue"
         onClick={onToggle}
       >
-        Toggle Sidebar
+        {isOpen ? 'Close Options' : 'Open Options'}
       </Button>
 
       <Box
