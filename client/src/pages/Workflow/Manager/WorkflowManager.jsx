@@ -52,9 +52,15 @@ function WorkflowManager() {
       shape: nodeType.nodeShape.name.toLowerCase(),
     }));
 
-    initialState.nodes = localNodes.length > 0 ? localNodes : initialState.nodes;
-    initialState.edges = localEdges.length > 0 ? localEdges : initialState.edges;
-    initialState.nodeTypes = localNodeTypes.length > 0 ? localNodeTypes : initialState.nodeTypes;
+    const newState = {
+      nodes: localNodes.length > 0 ? localNodes : initialState.nodes,
+      edges: localEdges.length > 0 ? localEdges : initialState.edges,
+      nodeTypes: localNodeTypes.length > 0 ? localNodeTypes : initialState.nodeTypes,
+    }
+    dispatch({
+      type: 'UPDATE_NODES_AND_EDGES',
+      payload: newState,
+    })
   }
 
   const onErrorFetch = (error) => {
