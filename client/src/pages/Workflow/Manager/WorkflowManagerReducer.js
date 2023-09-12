@@ -82,6 +82,12 @@ export const reducer = (state, action) => {
         ...state,
         focusElement: action.payload
       };
+    case 'UPDATE_NODES_AND_EDGES':
+      return {
+        ...state,
+        nodes: action.payload.nodes,
+        edges: action.payload.edges
+      };
     default:
       return state;
   }

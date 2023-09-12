@@ -12,7 +12,7 @@ const router = createBrowserRouter([
         element: <Workflow />,
       },
       {
-        path: 'create',
+        path: 'manage/:id',
         element: <WorkflowManager/>
       },
     ]
