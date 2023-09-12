@@ -23,6 +23,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       pageButtons.push(
         <Button {...buttonsProps}>
           {page <= totalPages ? page : ''}
+          { totalPages === 0 && page === 1 ? 1 : '' }
         </Button>
       )
     }
