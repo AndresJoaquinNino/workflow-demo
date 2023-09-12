@@ -25,7 +25,7 @@ function WorkflowManager() {
         data: {
           label: node.text,
           role: isImportanteNode ? nodeTypeName : '',
-          isDeletable: isImportanteNode ? true : false,
+          isDeletable: isImportanteNode ? false : true,
         },
         position: {
           x: node.positionX,
