@@ -21,7 +21,6 @@ import { useSearchParams, } from "react-router-dom";
 import { arrayFiller, getUrlParams } from "./../../utils";
 import { Pagination } from "./../../components";
 import { useNotificationContext } from "./../../context/Notification";
-import { useState } from "react";
 
 const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
 
@@ -31,31 +30,29 @@ const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   if (searchParams.get('page') === null) searchParams.set('page', 1);
   const queryParams = getUrlParams(searchParams);
-  const [notifyApiError, setNotifyApiError] = useState(true);
 
-  const {
-    data: response,
-    error,
-    isError,
-    isLoading,
-    isFetching,
-  } = useQuery({
-    queryKey: ['workflowTable', queryParams],
-    queryFn: () => paginateWorkflows(queryParams),
-    refetchOnWindowFocus: false,
-    retry: false,
-  });
-
-  const { addNotification } = useNotificationContext();
-
-  if (!isLoading && error && notifyApiError) {
-    setNotifyApiError(false);
+  const onErrorFetch = (error) => {
     addNotification({
       message: error?.message ?? 'Something went wrong',
       type: 'error',
       autoDelete: false,
     });
   }
+
+  const {
+    data: response,
+    isError,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ['workflowTable', queryParams],
+    queryFn: () => paginateWorkflows(queryParams),
+    onError: onErrorFetch,
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+
+  const { addNotification } = useNotificationContext();
 
   const isFullyLoaded = !isLoading && !isFetching && !isError;
 
@@ -144,15 +141,20 @@ const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
       </TableContainer>
       {
         isFullyLoaded
-          ? <Pagination
-            currentPage={parseInt(response?.currentPage, 10)}
-            totalPages={response?.totalPages}
-            onPageChange={(page) => {
-              queryParams.page = page;
-              setSearchParams(queryParams);
-            }}
-          />
-          : <Skeleton height={ROW_HEIGHT} width='50%' mr='auto' ml='auto' />
+        &&
+        <Pagination
+          currentPage={parseInt(response?.currentPage, 10)}
+          totalPages={response?.totalPages}
+          onPageChange={(page) => {
+            queryParams.page = page;
+            setSearchParams(queryParams);
+          }}
+        />
+      }
+      {
+        (isLoading || isFetching)
+        &&
+        <Skeleton height={ROW_HEIGHT} width='50%' mr='auto' ml='auto' />
       }
     </Box>
   );
