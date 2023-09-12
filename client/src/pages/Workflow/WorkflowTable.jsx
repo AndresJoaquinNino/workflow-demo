@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import { useQuery } from '@tanstack/react-query';
 import { paginateWorkflows } from "./../../repository";
 import { Skeleton } from '@chakra-ui/react'
-import { useSearchParams, } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { arrayFiller, getUrlParams } from "./../../utils";
 import { Pagination } from "./../../components";
 import { useNotificationContext } from "./../../context/Notification";
@@ -26,6 +26,8 @@ const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
 
   const ROW_HEIGHT = 8;
   const ROWS_QUANTITY = 10;
+
+  const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
   if (searchParams.get('page') === null) searchParams.set('page', 1);
@@ -112,7 +114,13 @@ const WorkflowsTable = ({ openDeleteModal, openCreateModal }) => {
                       workflow?.id
                         ?
                         <HStack spacing={2}>
-                          <IconButton icon={<FaPenToSquare />} colorScheme="teal" size="sm" mr="2" />
+                          <IconButton
+                            colorScheme="teal"
+                            size="sm"
+                            mr="2"
+                            icon={<FaPenToSquare />}
+                            onClick={() => navigate(`/manage/${workflow.id}`)}
+                          />
                           <IconButton
                             colorScheme="red"
                             size="sm"
