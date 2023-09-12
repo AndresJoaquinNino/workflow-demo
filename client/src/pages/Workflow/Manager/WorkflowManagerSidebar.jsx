@@ -15,7 +15,7 @@ import { COMPONENT_HEIGHT, COMPONENT_WIDTH } from '../../../utils';
 const WorkflowManagerSidebar = ({ state, dispatch }) => {
 
   const { focusElement, nodes } = state;
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
   const addNewNode = (event) => {
     event.preventDefault();
