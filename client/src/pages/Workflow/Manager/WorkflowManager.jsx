@@ -4,37 +4,58 @@ import { WorkflowManagerSidebar, WorkflowDiagram, reducer, initialState } from '
 import { COMPONENT_HEIGHT } from '../../../utils';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { getWorkflow } from '../../../repository';
+import { getDiagramInfo } from '../../../repository';
 import { useNotificationContext } from '../../../context/Notification';
+import { MarkerType } from 'reactflow';
 
 function WorkflowManager() {
 
   const { id } = useParams();
   const { addNotification } = useNotificationContext();
 
-  const onSuccessFetch = (data) => {
-    const localNodes = data.nodes.map(node => ({
-      id: node.reference,
-      data: {
-        label: node.text,
-        role: 'init',
-        isDeletable: false
-      },
-      position: {
-        x: node.positionX,
-        y: node.positionY
-      },
-      type: node?.nodeType?.nodeShape?.name.toLowerCase(),
-    }));
-    const localEdges = data.edges.map(edge => ({
+  const onSuccessFetch = ([workflowData, nodeTypes]) => {
+
+    nodeTypes.filter(nodeType => !['init', 'end'].includes(nodeType.name.toLowerCase()))
+    const localNodes = workflowData.nodes.map(node => {
+      const nodeTypeName = node.nodeType.name.toLowerCase()
+      const isImportanteNode = ['init', 'end'].includes(nodeTypeName) ? true : false;
+
+      return {
+        id: node.reference,
+        data: {
+          label: node.text,
+          role: isImportanteNode ? nodeTypeName : '',
+          isDeletable: isImportanteNode ? true : false,
+        },
+        position: {
+          x: node.positionX,
+          y: node.positionY
+        },
+        type: node?.nodeType?.nodeShape?.name.toLowerCase(),
+      }
+    });
+
+    const localEdges = workflowData.edges.map(edge => ({
       id: edge.reference,
       source: edge.source,
       sourceHandle: edge.sourceHandle,
       target: edge.target,
       targetHandle: edge.targetHandle,
+      type: 'smoothstep',
+      markerEnd: {
+        type: MarkerType.ArrowClosed,
+      },
     }));
+
+    const localNodeTypes = nodeTypes.map(nodeType => ({
+      id: nodeType.id,
+      name: nodeType.name,
+      shape: nodeType.nodeShape.name.toLowerCase(),
+    }));
+
     initialState.nodes = localNodes.length > 0 ? localNodes : initialState.nodes;
     initialState.edges = localEdges.length > 0 ? localEdges : initialState.edges;
+    initialState.nodeTypes = localNodeTypes.length > 0 ? localNodeTypes : initialState.nodeTypes;
   }
 
   const onErrorFetch = (error) => {
@@ -53,9 +74,11 @@ function WorkflowManager() {
     isFetching,
   } = useQuery({
     queryKey: ['workflowManager', id],
-    queryFn: () => getWorkflow(id),
+    queryFn: () => getDiagramInfo(id),
     onSuccess: onSuccessFetch,
     onError: onErrorFetch,
+    keepPreviousData: false,
+    retry: false,
     refetchOnWindowFocus: false,
   });
 

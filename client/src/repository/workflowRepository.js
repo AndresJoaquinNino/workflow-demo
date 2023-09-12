@@ -18,6 +18,22 @@ export const getWorkflow = async (id) => {
   return response.data;
 }
 
+export const getNodesTypes = async () => {
+  const response = await api.request({
+    method: 'GET',
+    url: '/node/types',
+  });
+
+  return response.data;
+}
+
+export const getDiagramInfo = async (id) => {
+  return Promise.all([
+    getWorkflow(id),
+    getNodesTypes()
+  ]);
+}
+
 export const storeWorkflow = async (data) => {
   const response = await api.request({
     method: 'POST',

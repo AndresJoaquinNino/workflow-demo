@@ -26,16 +26,13 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
   const addNewNode = (event) => {
     event.preventDefault();
     const entityName = event.target.entityName.value
-    const entityType = event.target.entityType.value
-    const NODE_SHAPES = {
-      process: 'rectangle',
-      conditional: 'diamond',
-    }
+    const entityTypeId = parseInt(event.target.entityType.value)
+    const nodeType = state.nodeTypes.find(nodeType => nodeType.id === entityTypeId)
     const newNode = {
       id: (nodes.length + 1).toString(),
-      data: { label: entityName },
+      data: { label: entityName, role: nodeType.name.toLowerCase() },
       position: { x: 100, y: 100 },
-      type: NODE_SHAPES[entityType],
+      type: nodeType.shape,
     };
     dispatch({ type: 'ADD_NODE', payload: newNode })
     event.target.entityName.value = ''
@@ -70,14 +67,21 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
   });
 
   const handleUpdateWorkflow = () => {
-    const newNodes = state.nodes.map(node => ({
-      reference: node.id,
-      text: node.data.label,
-      positionX: node.position.x,
-      positionY: node.position.y,
-      nodeType: 3,
-    }));
+    const nodeTypesArray = state.nodeTypes.map(nodeType => ([
+      `${nodeType.shape}_${nodeType.name.toLowerCase()}`, nodeType.id,
+    ]));
+    const nodeTypes = Object.fromEntries(nodeTypesArray);
 
+    const newNodes = state.nodes.map(node => {
+      const nodeTypeId = nodeTypes[node.type + '_' + node.data.role];
+      return {
+        reference: node.id,
+        text: node.data.label,
+        positionX: node.position.x,
+        positionY: node.position.y,
+        nodeType: nodeTypeId,
+      }
+    });
     const newEdges = state.edges.map(edge => ({
       reference: edge.id,
       source: edge.source,
@@ -94,6 +98,8 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
       }
     });
   }
+
+  const nodeTypesDisplay = state.nodeTypes.filter(nodeType => !['init', 'end'].includes(nodeType.name.toLowerCase()))
 
   return (
     <>
@@ -135,8 +141,16 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
               colorScheme='blue'
               variant='filled'
             >
-              <option value='process'>Action</option>
-              <option value='conditional'>Condition</option>
+              {
+                nodeTypesDisplay.map(nodeType => (
+                  <option
+                    key={nodeType.id}
+                    value={nodeType.id}
+                  >
+                    {nodeType.name}
+                  </option>
+                ))
+              }
             </Select>
             <Button
               w='100%'
@@ -148,13 +162,13 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
             </Button>
           </Box>
           <Button
-              w='100%'
-              type='submit'
-              colorScheme='green'
-              rightIcon={<MdSave size='1.2rem' />}
-              onClick={handleUpdateWorkflow}
-              isLoading={updateWorkflowMutation.isLoading}
-            >
+            w='100%'
+            type='submit'
+            colorScheme='green'
+            rightIcon={<MdSave size='1.2rem' />}
+            onClick={handleUpdateWorkflow}
+            isLoading={updateWorkflowMutation.isLoading}
+          >
             Save changes
           </Button>
           {

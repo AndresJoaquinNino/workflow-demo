@@ -34,7 +34,8 @@ export const initFocusElement = {
 export const initialState = {
   nodes: initNodes,
   edges: initEdges,
-  focusElement: initFocusElement
+  focusElement: initFocusElement,
+  nodeTypes: [],
 };
 
 export const reducer = (state, action) => {
@@ -84,9 +85,10 @@ export const reducer = (state, action) => {
       };
     case 'UPDATE_NODES_AND_EDGES':
       return {
-        ...state,
-        nodes: action.payload.nodes,
-        edges: action.payload.edges
+        focusElement: initFocusElement,
+        nodes: [...action.payload.nodes],
+        edges: [...action.payload.edges],
+        nodeTypes: [...action.payload.nodeTypes]
       };
     default:
       return state;
