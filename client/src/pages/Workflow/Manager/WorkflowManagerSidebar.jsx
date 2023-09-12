@@ -11,9 +11,15 @@ import {
 import { FaCirclePlus } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 import { COMPONENT_HEIGHT, COMPONENT_WIDTH } from '../../../utils';
+import { MdSave } from "react-icons/md";
+import { useMutation } from '@tanstack/react-query';
+import { updateWorkflow } from "../../../repository";
+import { useParams } from 'react-router-dom';
+import { useNotificationContext } from "../../../context/Notification";
 
 const WorkflowManagerSidebar = ({ state, dispatch }) => {
-
+  const { addNotification } = useNotificationContext();
+  const { id: workflowId } = useParams();
   const { focusElement, nodes } = state;
   const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true });
 
@@ -41,6 +47,52 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
 
   const deleteEdge = (nodeId) => {
     dispatch({ type: 'REMOVE_EDGE', payload: nodeId })
+  }
+
+  const updateWorkflowMutation = useMutation(updateWorkflow, {
+    retry: false,
+    onSuccess: () => {
+      addNotification({
+        message: 'Changes saved',
+        type: 'success',
+        autoDelete: true
+      });
+    },
+    onError: (error) => {
+      const errorList = error?.response?.data?.message;
+      const errorMsg = Array.isArray(errorList) ? errorList.join(', ') : 'Something went wrong';
+      addNotification({
+        message: errorMsg,
+        type: 'error',
+        autoDelete: true
+      });
+    },
+  });
+
+  const handleUpdateWorkflow = () => {
+    const newNodes = state.nodes.map(node => ({
+      reference: node.id,
+      text: node.data.label,
+      positionX: node.position.x,
+      positionY: node.position.y,
+      nodeType: 3,
+    }));
+
+    const newEdges = state.edges.map(edge => ({
+      reference: edge.id,
+      source: edge.source,
+      sourceHandle: edge.sourceHandle,
+      target: edge.target,
+      targetHandle: edge.targetHandle,
+    }));
+
+    updateWorkflowMutation.mutate({
+      id: workflowId,
+      data: {
+        nodes: newNodes,
+        edges: newEdges,
+      }
+    });
   }
 
   return (
@@ -95,6 +147,16 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
               Add
             </Button>
           </Box>
+          <Button
+              w='100%'
+              type='submit'
+              colorScheme='green'
+              rightIcon={<MdSave size='1.2rem' />}
+              onClick={handleUpdateWorkflow}
+              isLoading={updateWorkflowMutation.isLoading}
+            >
+            Save changes
+          </Button>
           {
             focusElement.type === 'node'
             &&
@@ -117,7 +179,6 @@ const WorkflowManagerSidebar = ({ state, dispatch }) => {
               Delete Edge
             </Button>
           }
-
         </VStack>
       </Box>
     </>

@@ -10,17 +10,31 @@ import { useNotificationContext } from '../../../context/Notification';
 function WorkflowManager() {
 
   const { id } = useParams();
-  const [state, dispatch] = useReducer(reducer, initialState);
   const { addNotification } = useNotificationContext();
 
   const onSuccessFetch = (data) => {
-    dispatch({
-      type: 'UPDATE_NODES_AND_EDGES',
-      payload: {
-        nodes: data.nodes.length > 0 ? data.nodes : initialState.nodes,
-        edges: data.edges.length > 0 ? data.edges : initialState.edges
-      }
-    });
+    const localNodes = data.nodes.map(node => ({
+      id: node.reference,
+      data: {
+        label: node.text,
+        role: 'init',
+        isDeletable: false
+      },
+      position: {
+        x: node.positionX,
+        y: node.positionY
+      },
+      type: node?.nodeType?.nodeShape?.name.toLowerCase(),
+    }));
+    const localEdges = data.edges.map(edge => ({
+      id: edge.reference,
+      source: edge.source,
+      sourceHandle: edge.sourceHandle,
+      target: edge.target,
+      targetHandle: edge.targetHandle,
+    }));
+    initialState.nodes = localNodes.length > 0 ? localNodes : initialState.nodes;
+    initialState.edges = localEdges.length > 0 ? localEdges : initialState.edges;
   }
 
   const onErrorFetch = (error) => {
@@ -30,6 +44,8 @@ function WorkflowManager() {
       autoDelete: false,
     });
   }
+
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   const {
     isError,
@@ -64,6 +80,7 @@ function WorkflowManager() {
           <Box h='100%' w='100%'>
             <WorkflowDiagram
               state={state}
+              isFullyLoaded={isFullyLoaded}
               dispatch={dispatch}
             />
           </Box>

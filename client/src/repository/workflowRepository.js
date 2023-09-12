@@ -36,3 +36,13 @@ export const deleteWorkflow = async (id) => {
 
   return response.data;
 }
+
+export const updateWorkflow = async ({ id, data }) => {
+  const response = await api.request({
+    method: 'PATCH',
+    url: `/workflow/${id}`,
+    data
+  });
+
+  return response.data;
+}
